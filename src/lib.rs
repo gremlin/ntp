@@ -23,13 +23,12 @@ fn main() {
 
 #[macro_use]
 extern crate custom_derive;
-#[macro_use]
 extern crate conv;
 #[macro_use]
 extern crate log;
 extern crate byteorder;
 
-use protocol::{ReadBytes, ConstPackedSizeBytes, WriteBytes};
+use protocol::{ConstPackedSizeBytes, ReadBytes, WriteBytes};
 use std::io;
 use std::net::{ToSocketAddrs, UdpSocket};
 use std::time::Duration;
@@ -88,11 +87,12 @@ pub fn request<A: ToSocketAddrs>(addr: A) -> io::Result<protocol::Packet> {
 
     // Send the data.
     let sz = sock.send_to(&bytes, addr)?;
-    debug!("{:?}", sock.local_addr());
-    debug!("sent: {}", sz);
 
     // Receive the response.
     let res = sock.recv(&mut bytes[..])?;
+
+    debug!("{:?}", sock.local_addr());
+    debug!("sent: {}", sz);
     debug!("recv: {:?}", res);
     debug!("{:?}", &bytes[..]);
 
