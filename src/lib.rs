@@ -52,10 +52,10 @@ pub fn request<A: ToSocketAddrs>(addr: A) -> errors::Result<packet::Packet> {
     sock.set_read_timeout(Some(Duration::from_secs(5)))?;
     sock.set_write_timeout(Some(Duration::from_secs(5)))?;
     let sz = sock.send_to(&data, addr)?;
-    debug!("{:?}", sock.local_addr());
-    debug!("sent: {}", sz);
     let mut buf = vec![0; 48];
     let res = sock.recv(&mut buf)?;
+    debug!("{:?}", sock.local_addr());
+    debug!("sent: {}", sz);
     debug!("recv: {:?}", res);
     debug!("{:?}", &buf[..]);
     let rdr = Cursor::new(&buf);
